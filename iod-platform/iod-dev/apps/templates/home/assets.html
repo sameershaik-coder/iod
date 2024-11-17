@@ -1,0 +1,137 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Assets Summary {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<style>
+    .right-align {
+        float: right;
+        clear: both; /* Clear float to prevent overlapping */
+    }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+   <!-- [ Main Content ] start -->
+   <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+ 
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <!-- [ breadcrumb ] start -->
+                    <div class="page-block">
+                        <div class="row align-items-center">
+                            <div class="col-md-12">
+                                <div class="page-header-title">
+                                    <h5 class="m-b-10"></h5>
+                                </div>
+                                <ul class="breadcrumb">
+                                    <li class="breadcrumb-item"><i class="feather icon-home"></i><a href="{% url 'networth' %}"> Networth</a></li>
+                                    <li class="breadcrumb-item"><a href="{% url 'category' category.id%}">Category</a></li>
+                                    <li class="breadcrumb-item"><a href="javascript:">Assets</a></li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- [ breadcrumb ] end -->
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="card">
+                                        <div class="card-header" style="border-bottom:none;padding-bottom:0px;">
+                                            <a class="btn btn-primary" href="{% url 'category' category.id%}" type="submit" style="width: 1px; height:40px" data-toggle="tooltip" data-original-title="Back">
+                                                <i class="feather icon-arrow-left"style="display: flex; justify-content: center; align-items: center;"></i>
+                                            </a>
+                                            <h5>
+                                            Assets Summary
+                                            </h5>
+                                            <a class="right-align"  href="{% url 'view_instruments' category.id  asset_group.id%}">
+                                                Edit Asset-Group <i class="feather icon-edit"></i></a>       
+                                        </div>
+                                        <div class="card-block table-border-style" style="padding-top:10px">
+                                            <div class="table-responsive">
+                                                {% if  instruments %}
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Instrument Name</th>
+                                                            <th>Amount Invested</th>
+                                                            <th>Current Value</th>
+                                                            <th>P/L Amount</th>
+                                                            <th>P/L %</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for instrument in instruments %}
+                                                        <tr>
+                                                            <th scope="row">{{forloop.counter}}</th>
+                                                            <td data-id="name-{{instrument.name}}" data-type="name">{{instrument.name}}</td>
+                                                            <td data-id="amount-{{instrument.amount_invested}}" data-type="invested_amount">{{instrument.amount_invested}}</td>
+                                                            <td data-id="current-{{instrument.current_value}}" data-type="current_value">{{instrument.current_value}}</td>
+                                                            <td data-id="pnlamount-{{instrument.pnl_amount}}" data-type="pnl_amount">{{instrument.pnl_amount}}</td>
+                                                            
+                                                            <td style="color: {% if instrument.pnl_percentage < 0 %}red{% elif instrument.pnl_percentage > 0 %}green{% else %}black{% endif %}; font-weight: bold;">
+                                                                {% if instrument.pnl_percentage > 0 %}+{% endif %}
+                                                                {{ instrument.pnl_percentage }}%
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                    {% else %}
+                                                        No instruments allocation is done yet
+                                                    {% endif %}
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="card card-social">
+                                        <div class="card-block border-bottom">
+                                            <div class="row align-items-center justify-content-center">
+                                                <div class="col text-left">
+                                                    Current value
+                                                </div>
+                                                <div class="col text-right">
+                                                    <h3>{{asset_current_value}}</h3>
+                                                    <h5 class="text-c-green mb-0">+{{pnl_percentage}}% <span class="text-muted">{{pnl_amount}}</span></h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-block">
+                                            <div class="row align-items-center justify-content-center card-active">
+                                                <div class="col-6">
+                                                    <h6 class="text-center  m-b-10"><span class="text-muted m-r-5">Invested:</span>{{total_invested_amount}}</h6>
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-c-theme2" role="progressbar" style="width:{{ total_invested_percentage|safe }}%;height:6px;" 
+                                                        aria-valuenow="{{total_invested_amount}}" aria-valuemin="0" aria-valuemax="{{total_asset_allocation}}"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <h6 class="text-center m-b-10"><span class="text-muted m-r-5">Allocated:</span>{{total_asset_allocation}}</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

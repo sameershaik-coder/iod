@@ -1,0 +1,137 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %} Upload CAS Document {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <!-- [ breadcrumb ] start -->
+                <div class="page-header">
+                    <div class="page-block">
+                        <div class="row align-items-center">
+                            <div class="col-md-12">
+                                <div class="page-header-title">
+                                    <h5 class="m-b-10"></h5>
+                                </div>
+                                <ul class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="{% url 'networth'%}"><i class="feather icon-home"></i> Networth</a></li>
+                                    <li class="breadcrumb-item"><a href="{% url 'view_upload' %}">Upload CAS</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ breadcrumb ] end -->
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-3">
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5>Upload CAS</h5>
+                                        <hr>
+                                        <div class="form-container">
+                                            <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                                                {% csrf_token %}
+                                                
+                                                <div class="form-group">
+                                                    <label for="{{ form.title.id_for_label }}">Document Title</label>
+                                                    <input type="text" name="{{ form.title.name }}" id="{{ form.title.id_for_label }}" required="" class="form-control" value="{% if form.title.value %}{{ form.title.value }}{% endif %}">
+                                                    <div class="invalid-feedback">
+                                                        Please enter a valid name.
+                                                    </div>
+                                                    {% if form.errors.name %}
+                                                        <div class="invalid-feedback" style="display: block;font-size: 85%;">
+                                                            <i class="feather icon-slack"></i>
+                                                            {{ form.errors.name|join:", " }}
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <label id ="upload_document_lbl_id" for="{{ form.document.id_for_label }}">Upload PDF Document</label>
+                                                    <input id="choose_file_input_id" type="file" name="document" required="" id="id_document" onchange="displayFileLink(this)">
+                                                    <div class="invalid-feedback">
+                                                        Please upload a valid PDF document.
+                                                    </div>
+                                                    {% if form.errors.document %}
+                                                        <div class="invalid-feedback" style="display: block;font-size: 85%;">
+                                                            <i class="feather icon-slack"></i>
+                                                            {{ form.errors.document|join:", " }}
+                                                        </div>
+                                                    {% endif %}
+                                                    
+                                                </div>
+                                        
+                                                <!-- Link to show selected file name with icon -->
+                                                <a id="file-link" href="#" style="display: none;" onclick="reSelectFile(); return false;">
+                                                    <img id="file-icon" src="" alt="File Icon" style="display: none; width: 16px; height: 16px; margin-right: 8px;">
+                                                    <span id="file-name"></span>
+                                                </a>
+                                                <!-- Duplicate File Error -->
+                                                {% if error_message %}
+                                                <div class="alert alert-danger" style="margin-top: 10px;">
+                                                    {{ error_message }}
+                                                </div>
+                                                {% endif %}
+                                                <button type="submit" class="btn btn-primary">Upload</button>
+                                                <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+                                            </form>
+                                            
+                                            <script>
+                                                // Function to display the selected file name as a clickable link and show icon
+                                                function displayFileLink(input) {
+                                                    if (input.files.length > 0) {
+                                                        const fileName = input.files[0].name;
+                                                        const fileLink = document.getElementById('file-link');
+                                                        const fileIcon = document.getElementById('file-icon');
+                                                        const fileNameSpan = document.getElementById('file-name');
+                                                        const upload_document_lbl = document.getElementById('upload_document_lbl_id');
+                                                        
+                                                        fileNameSpan.innerText = `Selected file: ${fileName} (Click to change)`;
+                                                        fileLink.style.display = 'block';  // Show the link
+                                        
+                                                        // Set the icon based on file type (you can customize the icon based on your needs)
+                                                        fileIcon.src = "https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg";  // Example: PDF icon
+                                                        fileIcon.style.display = 'inline';  // Show the file icon
+
+                                                        upload_document_lbl.style.display = 'none';
+
+                                                        const choose_file_input = document.getElementById('choose_file_input_id');
+                                                        choose_file_input.style.display = 'none';
+                                                    }
+                                                }
+                                        
+                                                // Function to trigger the file input dialog again when the link is clicked
+                                                function reSelectFile() {
+                                                    document.getElementById('id_document').click();  // Trigger the file input dialog
+                                                }
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script src="{% static 'assets/js/plugins/bouncer.min.js' %}"></script>
+<script src="{% static 'assets/js/pages/form-validation.js' %}"></script>
+
+{% endblock javascripts %}

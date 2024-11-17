@@ -1,0 +1,183 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block title %} Configuration - Nominee {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<style>
+    .right-align {
+        float: right;
+        clear: both; /* Clear float to prevent overlapping */
+    }
+    .left-align {
+        float: left;
+        clear: both; /* Clear float to prevent overlapping */
+    }
+</style>
+<!-- enjoyhint css -->
+<link rel="stylesheet" href="{% static 'assets/css/plugins/introjs.min.css' %}">
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+ <!-- [ Main Content ] start -->
+ <div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <!-- [ breadcrumb ] start -->
+                <div class="page-block">
+                    <div class="row align-items-center">
+                            <div class="col-md-12">
+                                
+                            </div>
+                            <div class="page-header-title">
+                                <h5 class="m-b-10"></h5>
+                            </div>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="{% url 'networth'%}"><i class="feather icon-home"></i> Networth</a></li>
+                                <li class="breadcrumb-item"><a href="{% url 'view_profile' %}">Profile</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:">Nominee Settings</a></li>
+                                
+                            </ul>
+                    </div>
+                </div>
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <!-- [ Main Content ] start -->
+                            <div class="row">
+                                <div class="col-md-6 col-xl-4"></div>
+                                <div class="col-md-6 col-xl-4"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="card user-card user-card-1">
+                                        <!-- Card Header start -->
+                                        <div class="card-header" style="border-bottom:none;padding-bottom:0px;">
+                                            <a class="btn btn-primary" href="{% url 'view_profile' %}" type="submit" style="width: 1px; height:40px" data-toggle="tooltip" data-original-title="Networth Configuration">
+                                                <i class="feather icon-arrow-left"style="display: flex; justify-content: center; align-items: center;"></i>
+                                            </a>
+                                            <h5>Nominee Settings</h5>
+                                            {% if nominee_exists %}
+                                            <a class="right-align"  href="{% url 'edit_nominee' nominee.id %}"><i class="feather icon-edit-2"></i> Edit Nominee</a>
+                                            {% endif %}
+                                        </div>
+                                        <!-- Card Header end -->
+                                        <!-- Card Block start -->
+                                        <div class="card-block" style="padding-top:10px">
+                                            {% if nominee_exists %}
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item">
+                                                    <span class="f-w-500"><i
+                                                            class="feather icon-user m-r-10 h5"></i>Name</span>
+                                                    <a href="#" class="float-end text-body">{{nominee.name}}</a>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <span class="f-w-500"><i class="feather icon-mail m-r-10"></i>Email</span>
+                                                    <a href="mailto:{{ request.user.email }}" class="float-end text-body">
+                                                        {{ nominee.email }}
+                                                    </a>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <span class="f-w-500"><i
+                                                            class="feather icon-monitor m-r-10 h5"></i>Status</span>
+                                                    <span class="float-end">
+                                                        {% if nominee.status == "A" %}
+                                                        Active
+                                                        {% elif nominee.status == "U" %}
+                                                            Unsubscribed
+                                                        {% else %}
+                                                            {{ nominee.status }}
+                                                        {% endif %}
+                                                    </span>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <span class="f-w-500"><i class="feather icon-mail m-r-10"></i>Send Email</span>
+                                                    <span class="float-end">
+                                                        <a class="btn btn-primary btn-sm" title="sends email to your nominee"  href="{% url 'send_nominee_email' %}" type="submit">Now</a>
+                                                    </span>
+                                                    
+                                                </li>
+                                                <div class="d-flex justify-content-center" style="padding: 10px;">
+                                                    <div class="form-group">
+                                                        <button type="submit"  id="submitBtn" class="btn btn-primary" style="display: none;">Submit</button>
+                                                        <a href="{% url 'view_profile' %}" class="btn btn-secondary">Back</a>
+                                                    </div>
+                                                    <form id="deleteForm" class="right-align" action="nominee/{{nominee.id}}/delete" method="POST" style="display: inline-block;">
+                                                        {% csrf_token %}
+                                                    </form>
+                                                    <button data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-danger" style="width: 1px; height:43px">
+                                                        <i class="feather icon-trash-2"style="display: flex; justify-content: center; align-items: center;"></i>
+                                                    </button>
+                                                    {% comment %} <button id="btn_nominee_delete" type="button" href="{% url 'delete_nominee' nominee.id %}" class="btn  btn-primary" data-bs-toggle="modal"data-bs-target="#deleteModal">Launch demo modal</button> {% endcomment %}
+                                                </div>
+                                            </ul>
+                                            <div class="d-flex justify-content-center" style="padding: 10px;">
+                                                {% if messages %}
+                                                <ul class="messages">
+                                                    {% for message in messages %}
+                                                    {{ message }}
+                                                    {% endfor %}
+                                                </ul>
+                                                {% endif %}
+                                            </div>
+                                            {% else %}
+                                            <div class="d-flex justify-content-center">
+                                                <a class="btn btn-outline-primary add-button-step1"  href="{% url 'create_nominee' %}" type="submit">Add</a>
+                                            </div>
+                                            <div class="d-flex justify-content-center" style="padding: 10px;">
+                                                No Nominee has been set yet.
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        <!-- Card Block end -->
+                                        <!-- Delete new confirmation modal -->
+                                        <div id="deleteModal" class="modal fade" tabindex="-1" role="dialog"
+                                            aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLiveLabel">
+                                                            Confirm Delete
+                                                        </h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Are you sure you want to delete this nominee?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn  btn-secondary"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="{% static 'assets/js/plugins/bouncer.min.js' %}"></script>
+<script src="{% static 'assets/js/pages/form-validation.js' %}"></script>
+
+<script>
+    document.getElementById('confirmDelete').addEventListener('click', function() {
+        document.getElementById('deleteForm').submit();
+    });
+</script>
+
+
+{% endblock javascripts %}

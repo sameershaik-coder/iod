@@ -1,0 +1,282 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %} Configuration - Asset-Group {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<style>
+    .right-align {
+        float: right;
+        clear: both; /* Clear float to prevent overlapping */
+    }
+</style>
+<!-- enjoyhint css -->
+<link rel="stylesheet" href="{% static 'assets/css/plugins/introjs.min.css' %}">
+{% endblock stylesheets %}
+
+{% block content %}
+   <!-- [ Main Content ] start -->
+   <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <!-- [ breadcrumb ] start -->
+
+                    <div class="page-block">
+                        <div class="row align-items-center">
+                            <div class="col-md-12">
+                                
+                            </div>
+                            <div class="page-header-title">
+                                <h5 class="m-b-10"></h5>
+                            </div>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="{% url 'networth'%}"><i class="feather icon-home"></i> Networth</a></li>
+                                <li class="breadcrumb-item"><a href="{% url 'view_networth'%}"> Configuration</a></li>
+                                <li class="breadcrumb-item"><a href="{% url 'view_asset_groups' category.id %}">Category - {{category.name}}</a></li>
+                                <li class="breadcrumb-item"><a href="{% url 'view_instruments' category.id asset_group.id %}">Asset-Group - {{asset_group.name}}</a></li>
+                                {% if is_edit %}
+                                <li class="breadcrumb-item"><a href="javascript:">Instrument - {{instrument.name}}</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                
+                    <!-- [ breadcrumb ] end -->
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- [ Main Content ] start -->
+                                <div class="row">
+                                    <div class="col-md-6 col-xl-4"></div>
+                                    <div class="col-md-6 col-xl-4"></div>
+                                    
+                                </div>    
+                                {% if is_edit %}
+                                <div class="row">
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-5">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5>Edit Instrument</h5>
+                                                <hr>
+                                                <div class="form-container" >
+                                                    <form method="post" class="needs-validation" novalidate action="">
+                                                        {% csrf_token %}
+                                                        <div class="form-group">
+                                                                <label for="{{ form.name.id_for_label }}">Instrument Name</label>
+                                                            <input type="text" name="{{ form.name.name }}" id="{{ form.name.id_for_label }}" required="" class="form-control" 
+                                                            value="{%if form.name.value%}{{form.name.value}}{%endif%}">
+                                                            <div class="invalid-feedback">
+                                                                Please enter a valid name.
+                                                            </div>
+                                                            {% if form.errors.name %}
+                                                                <div class="invalid-feedback" style="display: block;font-size: 85%;" >
+                                                                    <i class="feather icon-slack"></i>
+                                                                    {{ form.errors.name|join:", " }}
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="{{ form.amount_invested.id_for_label }}">Amount Invested</label>
+                                                            <input type="text" class="form-control" name="{{form.amount_invested.name}}" required="" id="{{ form.amount_invested.id_for_label }}" 
+                                                            value="{%if form.amount_invested.value%}{{form.amount_invested.value}}{%endif%}"/>
+                                                            <div class="invalid-feedback">
+                                                                Please enter a valid amount.
+                                                            </div>
+                                                            {% if form.errors.amount_invested %}
+                                                                <div class="invalid-feedback" style="display: block;font-size: 85%;" >
+                                                                    <i class="feather icon-slack"></i>
+                                                                    {{ form.errors.amount_invested|join:", " }}
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="{{ form.current_value.id_for_label }}">Current Value</label>
+                                                            <input type="text" class="form-control" name="{{form.current_value.name}}" required="" 
+                                                            id="{{ form.current_value.id_for_label }}" 
+                                                            value="{%if form.current_value.value%}{{form.current_value.value}}{%endif%}"/>
+                                                            <div class="invalid-feedback">
+                                                                Please enter a valid amount.
+                                                            </div>
+                                                            {% if form.errors.current_value %}
+                                                                <div class="invalid-feedback" style="display: block;font-size: 85%;" >
+                                                                    <i class="feather icon-slack"></i>
+                                                                    {{ form.errors.current_value|join:", " }}
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="form-group">
+                                                        <input type="submit" value="Submit" class="btn btn-primary">
+                                                        <a href="{% url 'view_instruments' category.id asset_group.id %}" class="btn btn-secondary">Cancel</a>
+                                                        </div>
+                                                    </form>
+                                                    {% if error_message %}
+                                                    <div class="invalid-feedback" style="display: block; font-size: 90%;">
+                                                        <i class="feather icon-slack"></i>
+                                                        {{ error_message }}
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        
+                                    </div>
+                                </div>           
+                                {% else %}
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <div class="card">
+                                            <div class="card-header" style="border-bottom:none;padding-bottom:0px;">
+                                                <a class="btn btn-primary" href="{% url 'view_asset_groups' category.id %}" type="submit" style="width: 1px; height:40px" 
+                                                data-toggle="tooltip" data-original-title="Category Configuration">
+                                                    <i class="feather icon-arrow-left"style="display: flex; justify-content: center; align-items: center;"></i>
+                                                </a>
+                                                <h5>Asset-Group - {{asset_group.name}} - Configuration</h5>
+                                                <a class="right-align"  href="{% url 'assets' asset_group.id %}"><i class="feather icon-chevrons-left"></i> Asset-Group Summary</a>
+                                            </div>
+                                            
+                                            <div class="card-block" style="padding-top:10px">
+                                                <div class="table-responsive">
+                                                    {% if is_edit %} 
+                                                    <form method="post" action="" >
+                                                        {% csrf_token %}
+                                                        {{ form.as_p }}
+                                                        <input type="submit" value="Submit">
+                                                    </form>
+                                                    {% else %}
+                                                        {% if request.method == "GET" %}           
+                                                            {% if  instruments %}
+                                                            <table id="tbl_instruments" class="table">
+                                                                <thead>
+                                                                    <tr class="text-center">
+                                                                        <th>#</th>
+                                                                        <th>Instrument Name</th>
+                                                                        <th>Amount Invested</th>
+                                                                        <th>Current Value</th>
+                                                                        <th>Action</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {% for instrument in instruments %}
+                                                                    <tr>
+                                                                        <th class="text-center" scope="row">{{forloop.counter}}</th>
+                                                                        <td class="text-center" data-id="{{instrument.name}}" data-type="name">{{instrument.name}}</td>
+                                                                        <td class="text-center" data-id="{{instrument.amount_invested}}" data-type="amount_invested">{{instrument.amount_invested}}</td>
+                                                                        <td class="text-center" data-id="{{instrument.current_value}}" data-type="current_value">{{instrument.current_value}}</td>
+                                                                        <td class="text-center">
+                                                                            <a class="btn btn-primary" href="instrument/{{instrument.id}}/edit" type="submit">Edit</a>
+                                                                            <form class="deleteForm" data-id="{{instrument.id}}"  action="instrument/{{instrument.id}}/delete" method="POST" style="display: inline-block;">
+                                                                                {% csrf_token %}
+                                                                            </form>
+                                                                            <button type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-danger" data-id="{{instrument.id}}" style="width: 1px; height:42px">
+                                                                                <i class="feather icon-trash-2"style="display: flex; justify-content: center; align-items: center;"></i>
+                                                                            </button>
+                                                                        </td>
+                                                                    </tr>
+                                                                    {% endfor %}
+                                                                    
+                                                                </tbody>
+                                                                
+                                                                {% else %}
+                                                                {% endif %}
+                                                            </table>
+                                                            
+                                                            {% if not fully_allocated %}
+                                                            <div class="d-flex justify-content-center">
+                                                                <a class="btn btn-outline-primary add-button-step1" href="{% url 'create_instrument' category.id asset_group.id %}" type="submit">Add</a>
+                                                            </div>
+                                                            
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    
+
+                                                    <!-- Delete new confirmation modal -->
+                                                    <div id="deleteModal" class="modal fade" tabindex="-1" role="dialog"
+                                                        aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="deleteInstrumentModalLabel">
+                                                                        Confirm Delete
+                                                                    </h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>Are you sure you want to delete this Instrument?</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn  btn-secondary"
+                                                                        data-bs-dismiss="modal">Close</button>
+                                                                    <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                       
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <!-- [ Main Content ] end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<!---validation Js -->
+<script src="{% static 'assets/js/plugins/bouncer.min.js' %}"></script>
+<!-- form-picker-custom Js -->
+<script src="{% static 'assets/js/pages/form-validation.js' %}"></script>
+
+<script type="text/javascript">
+    // When the Delete button is clicked
+$('.btn-danger').click(function() {
+    // Get the instrument id from the data attribute . is by class
+    var instrumentId = $(this).data('id');
+    
+    // Store the instrument id in a data attribute of the confirmDelete button # is by id
+    $('#confirmDelete').data('id', instrumentId);
+});
+
+// When the confirmDelete button is clicked
+$('#confirmDelete').click(function() {
+    // Get the instrument id from the data attribute
+    var instrumentId = $(this).data('id');
+    // Submit the form for the specific instrument
+    $('form.deleteForm[data-id="' + instrumentId + '"]').submit();
+});
+
+</script>
+  
+  <script type="text/javascript">
+    var user_tour_status = "{{user_tour.status}}";
+    var token = '{% csrf_token %}'
+    let valueStartIndex = token.indexOf('value="') + 7; // 7 is the length of 'value="'
+    let valueEndIndex = token.indexOf('">', valueStartIndex);
+    let csrftoken = token.substring(valueStartIndex, valueEndIndex);
+    let steps = '"' +'{{user_tour_steps_json  | escapejs }}' + '"';
+    let user_tour_steps_json = '{{user_tour_steps_json  | escapejs }}';
+    
+</script>
+
+  <!-- tour Js -->
+<script src="{% static 'assets/js/plugins/intro.min.js' %}"></script>
+<script type="module" src="{% static 'assets/js/pages/ac-tour-configuration-agroup.js' %}"></script>
+{% endblock javascripts %}

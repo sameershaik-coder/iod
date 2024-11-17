@@ -1,0 +1,76 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Page Blank {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <!-- [ breadcrumb ] start -->
+                    <div class="page-header">
+                        <div class="page-block">
+                            <div class="row align-items-center">
+                                <div class="col-md-12">
+                                    <div class="page-header-title">
+                                        <h5 class="m-b-10"></h5>
+                                    </div>
+                                    <ul class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="{% url 'view_asset_types' %}">Base Unit</a></li>
+                                        <li class="breadcrumb-item"><a href="javascript:">Add</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ breadcrumb ] end -->
+                    <!-- [ Main Boby ] start -->
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <div class="d-flex justify-content-center">
+                              <!-- Row starts -->  
+                                <div class="row">
+                                  <!-- card starts -->
+                                    <div class="card">
+                                        <!-- card body starts-->
+                                        <div class="card-body">
+                                            <h5>Add a new Base Unit here</h5> 
+                                            <div class="form-container">
+                                                <form method="post">
+                                                    {% csrf_token %}
+                                                    <div class="form-group">
+                                                        <label for="id_name">Base-Unit Name:</label>
+                                                        <input type="text" class="form-control" name="name" maxlength="200" required="" id="id_name">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="id_weightage">Value:</label>
+                                                        <input type="number" class="form-control" name="value" required="" id="id_value">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="submit" value="Submit" class="btn btn-primary">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <!-- card body ends-->
+                                    </div>
+                                    <!-- card ends-->
+                                </div>
+                                <!-- Row ends -->  
+                            </div>  
+                        </div>
+                    </div>
+                    <!-- [ Main Body ] ends -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [ Main Content ] ends -->
+
+{% endblock content %}
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

@@ -1,0 +1,54 @@
+{% extends "esite/layouts/base.html" %}
+{% load static %}
+
+{% block title %} Online Investment Planning and Tracking Solutions for Individual Investors {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+    <!-- map-vector css -->
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/jsvectormap.min.css' %}">
+
+{% endblock stylesheets %}
+
+{% block content %}	
+
+{% include 'esite/includes/navbar.html' %}
+{% include 'esite/includes/header.html' %}
+{% include 'esite/includes/features.html' %}
+{% include 'esite/includes/contact-us.html' %}
+{% include 'esite/includes/call-to-action.html' %}
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script>
+    // Start [ Menu hide/show on scroll ]
+
+	var ost = 0;
+    document.addEventListener('scroll', function () {
+        let cOst = document.documentElement.scrollTop;
+        if (cOst == 0) {
+            document.querySelector(".navbar").classList.add("top-nav-collapse");
+        } else if (cOst > ost) {
+            document.querySelector(".navbar").classList.add("top-nav-collapse");
+            document.querySelector(".navbar").classList.remove("default");
+        } else {
+            document.querySelector(".navbar").classList.add("default");
+            document.querySelector(".navbar").classList.remove("top-nav-collapse");
+        }
+        ost = cOst;
+    });
+    // End [ Menu hide/show on scroll ]
+    var wow = new WOW({
+        animateClass: 'animate__animated', // animation css class (default is animated)
+    });
+    wow.init();
+    var scrollSpy = new bootstrap.ScrollSpy(document.body, {
+        target: '#navbar-example'
+    }) 
+</script>
+
+{% endblock javascripts %}

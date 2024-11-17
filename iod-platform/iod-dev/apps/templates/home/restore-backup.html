@@ -1,0 +1,92 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %} Restore Backup {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<style>
+    .right-align {
+        float: right;
+        clear: both; /* Clear float to prevent overlapping */
+    }
+</style>
+<!-- enjoyhint css -->
+<link rel="stylesheet" href="{% static 'assets/css/plugins/introjs.min.css' %}">
+
+{% endblock stylesheets %}
+
+{% block content %}
+   <!-- [ Main Content ] start -->
+   <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <!-- [ breadcrumb ] start -->
+                    <div class="page-block">
+                        <div class="row align-items-center">
+                            <div class="col-md-12">
+                                <div class="page-header-title">
+                                    <h5 class="m-b-10"></h5>
+                                </div>
+                                <ul class="breadcrumb">
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ breadcrumb ] end -->
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <div class="row">
+                                <div class="col-sm-6 mb-4">
+                                    <div class="card">
+                                        <div class="card-header networth-summary-step1">
+                                            <h5>Restore Summary</h5>
+                                        </div>
+                                        <div class="card-block">
+                                            <div class="row mb-3">
+                                                {% if msg %} 
+                                                    <div class="text-center">
+                                                        <span class="mb-0">
+                                                            {{ msg }}
+                                                        </span>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="row">
+                                                <div class="text-center">
+                                                    <a class="btn btn-primary" href="{% url 'networth' %}" type="submit">View Networth</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script type="text/javascript">
+    var user_tour_status = "{{user_tour.status}}";
+    var token = '{% csrf_token %}'
+    let valueStartIndex = token.indexOf('value="') + 7; // 7 is the length of 'value="'
+    let valueEndIndex = token.indexOf('">', valueStartIndex);
+    let csrftoken = token.substring(valueStartIndex, valueEndIndex);
+    let steps = '"' +'{{user_tour_steps_json  | escapejs }}' + '"';
+    let user_tour_steps_json = '{{user_tour_steps_json  | escapejs }}';
+</script>
+
+<!-- tour Js -->
+<script src="{% static 'assets/js/plugins/intro.min.js' %}"></script>
+<script type="module" src="{% static 'assets/js/pages/ac-tour-first-step.js' %}"></script>
+
+
+{% endblock javascripts %}

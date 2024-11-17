@@ -1,0 +1,103 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %} Edit Nominee {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <!-- [ breadcrumb ] start -->
+                    <div class="page-header">
+                        <div class="page-block">
+                            <div class="row align-items-center">
+                                <div class="col-md-12">
+                                    <div class="page-header-title">
+                                        <h5 class="m-b-10"></h5>
+                                    </div>
+                                    <ul class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="{% url 'networth'%}"><i class="feather icon-home"></i> Networth</a></li>
+                                        <li class="breadcrumb-item"><a href="{% url 'view_profile' %}">Profile</a></li>
+                                        <li class="breadcrumb-item"><a href="{% url 'view_nominee' %}">Nominee</a></li>
+                                        <li class="breadcrumb-item"><a href="javascript:">Edit Nominee</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ breadcrumb ] end -->
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5>Edit Nominee</h5>
+                                            <hr>
+                                            <div class="form-container">
+                                                <form method="post" class="needs-validation" novalidate>
+                                                    {% csrf_token %}
+                                                    <div class="form-group">
+                                                        <label for="{{ form.name.id_for_label }}">Nominee Name</label>
+                                                        <input type="text" name="{{ form.name.name }}" id="{{ form.name.id_for_label }}" required="" class="form-control" value="{%if form.name.value%}{{form.name.value}}{%endif%}">
+                                                        <div class="invalid-feedback">
+                                                            Please enter a valid name.
+                                                        </div>
+                                                        {% if form.errors.name %}
+                                                            <div class="invalid-feedback" style="display: block;font-size: 85%;" >
+                                                                <i class="feather icon-slack"></i>
+                                                                {{ form.errors.name|join:", " }}
+                                                            </div>
+                                                        {% endif %}
+                                                   </div>
+                                                  <div class="form-group">
+                                                      <label for="{{ form.email.id_for_label }}">Email Address</label>
+                                                      <input type="email" class="form-control" name="{{form.email.name}}" required="" id="{{ form.email.id_for_label }}" value="{%if form.email.value%}{{form.email.value}}{%endif%}">
+                                                      <div class="invalid-feedback">
+                                                          Please enter a valid email address.
+                                                      </div>
+                                                      {% if form.errors.email %}
+                                                          <div class="invalid-feedback" style="display: block;font-size: 85%;" >
+                                                              <i class="feather icon-slack"></i>
+                                                              {{ form.errors.email|join:", " }}
+                                                          </div>
+                                                      {% endif %}
+                                                  </div>
+                                                  <button type="submit" class="btn btn-primary" >Submit</button>
+                                                  <a href="{% url 'view_nominee' %}" class="btn btn-secondary">Cancel</a>
+                                                  </form> 
+                                                    {% if error_message %}
+                                                      <div class="invalid-feedback" style="display: block;font-size: 90%;">
+                                                        <i class="feather icon-slack"></i>
+                                                          {{error_message}}
+                                                      </div>
+                                                  {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script src="{% static 'assets/js/plugins/bouncer.min.js' %}"></script>
+<script src="{% static 'assets/js/pages/form-validation.js' %}"></script>
+
+{% endblock javascripts %}
+    
