@@ -1,0 +1,17 @@
+$ virtualenv env
+$ source env/bin/activate
+$ pip3 install -r requirements.txt
+
+
+python3 -m venv venv
+--> allow scripts to run from terminal
+	Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+	--> activate the environment
+		venv\scripts\activate
+	& c:/Code/hello_django/.venv/Scripts/Activate.ps1
+
+
+
+pip install -r requirements.txt
+
+python.exe -m pip install --upgrade pip

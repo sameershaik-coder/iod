@@ -1,0 +1,51 @@
+# .coveragerc to control coverage.py
+[run]
+source = .
+omit =
+   */apps/extsite/*
+   *venv/*
+   *venv/bin/*
+   *venv/include/*
+   *venv/lib/*
+   *manage.py
+   */settings.py
+   */local_settings.py
+   */tests/*
+   *apps.py
+   *migrations/*
+   *asgi.py
+   *wsgi.py
+   *__init__*
+   */__pycache__/*
+   */site-packages/*
+   */distutils/*
+
+   */apps/demo/*
+   */apps/esite/*
+   
+   */apps/config.py
+
+   */apps/authentication/admin.py
+   */apps/authentication/config.py
+   */apps/authentication/tests*
+   */apps/authentication/models.py
+
+   */apps/configuration/admin*
+   */apps/configuration/config*
+   */apps/configuration/tests*
+   */apps/configuration/migrations/*
+
+   */apps/home/config*
+   */apps/home/migrations/*
+   gunicorn*
+
+   */core/settings_templates/*
+   */core/settings_*
+
+# out  of scope for now 
+   apps\home\lib\trades.py
+
+[report]
+#fail_under = 100
+show_missing = True
+#skip_covered = True
