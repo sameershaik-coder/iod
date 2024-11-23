@@ -1,0 +1,7 @@
+----------------------------------------------------
+Dev Setup
+----------------------------------------------------
+docker-compose -f iod-dev/dev-docker-compose.yml down
+docker-compose -f iod-dev/dev-docker-compose.yml up -d --build
+
+some text
